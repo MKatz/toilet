@@ -1,17 +1,44 @@
+// It would be good to rename this file to something 
+// more descriptive like 'price_graph.js'
 $(function () {
     
     var houseSize=1;
 
     var costHigh=[];
 
-    for(i=0; i<41; i++){
-        costHigh.push(300 + (i*(9.344*houseSize)));
-    };
+    // 1. It's a good idea to use variables for constants.
+    // This makes code more readable. It also makes it easier
+    // to change constants if you use them in a bunch of places.
+    // 2. By convention constants are all uppercase and snakecase.
+    // 3. We can simplify this code by moving stuff out of the loops
+    // and using one loop.
+    // 4. You want to put a 'var' infront of your 'i' variable declaration.
+
+    // Original:
+    // for(i=0; i<41; i++){
+    //     costHigh.push(300 + (i*(9.344*houseSize)));
+    // };
 
     var costTrad=[];
 
-    for(i=0; i<41; i++){
-        costTrad.push(i*(38.325*houseSize));
+    // Original:
+    // for(i=0; i<41; i++){
+    //     costTrad.push(i*(38.325*houseSize));
+    // };
+
+    
+    // Better:
+    var YEARS = 41;
+    var FLUSHES_PER_DAY = 5;
+    var HIGH_PER_FLUSH = 1.28;
+    var TRAD_PER_FLUSH = 5.25;
+    var PRICE_PER_GALLON = 0.004;
+    var flushesPerYear = 365 * FLUSHES_PER_DAY * houseSize;
+    var highPerYear = flushesPerYear * HIGH_PER_FLUSH * PRICE_PER_GALLON;
+    var tradPerYear = flushesPerYear * TRAD_PER_FLUSH * PRICE_PER_GALLON;
+    for(var i=0; i<YEARS; i++){
+        costHigh.push(300 + (i*highPerYear));
+        costTrad.push(i*tradPerYear);
     };
 
     
@@ -85,6 +112,18 @@ $(function () {
     //input event
     $('.form-control').change(function(){
         var houseSize = $(this).val();
+
+        /*
+        You will notice that this "change-handler" function
+        is just a copy of the above code.
+        What if you moved the render graph code into it's own function
+        so this method looked like:
+
+        $('.form-control').change(function(){
+            var houseSize = $(this).val();
+            renderPriceGraph(houseSize);
+        });
+        */
 
 
     // var houseSize = 2;
