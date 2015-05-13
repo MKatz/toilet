@@ -242,8 +242,6 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -252,6 +250,9 @@
 
   <!-- Custom Theme JavaScript -->
     <script>
+    // I would move all of the logic in this script tag to a separate JS file.
+    // <script type="text/javascript" src="navigation.js"/>
+
     // Closes the sidebar menu
     $("#menu-close").click(function(e) {
         e.preventDefault();
@@ -264,7 +265,12 @@
     });
     // Scrolls to the selected menu item on the page
     $(function() {
+        // The jQuery selector 'a[href*=#]:not([href=#])' is not very 
+        // maintainable or readable.  It would be better to add a class to you
+        // links like: <a class="nav-clickable"> and then change your 
+        // jQuery to $('.nav-clickable')
         $('a[href*=#]:not([href=#])').click(function() {
+            // I'm not sure "|| location.hostname == this.hostname" adds value.  Can you delete it without adding bugs?
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
                 var target = $(this.hash);
                 target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
